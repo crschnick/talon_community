@@ -24,6 +24,8 @@ refactor: user.idea("action Refactorings.QuickListPopupAction")
 refactor <user.text>:
     user.idea("action Refactorings.QuickListPopupAction")
     insert(text)
+refactor override:
+  user.idea("action OverrideMethods")
 extract variable: user.idea("action IntroduceVariable")
 extract field: user.idea("action IntroduceField")
 extract constant: user.idea("action IntroduceConstant")

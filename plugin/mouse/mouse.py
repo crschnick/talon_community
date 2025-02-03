@@ -1,6 +1,6 @@
 import os
 
-from talon import Context, Module, actions, app, clip, cron, ctrl, imgui, settings, ui
+from talon import Context, Module, actions, app, clip, cron, ctrl, imgui, settings, ui, noise
 from talon_plugins import eye_zoom_mouse
 
 key = actions.key
@@ -53,7 +53,7 @@ mod.setting(
     default=0,
     desc="Pop noise clicks left mouse button. 0 = off, 1 = on with eyetracker but not with zoom mouse mode, 2 = on but not with zoom mouse mode",
 )
-mod.setting(
+mouse_enable_pop_stops_scroll = mod.setting(
     "mouse_enable_pop_stops_scroll",
     type=bool,
     default=False,
@@ -291,6 +291,12 @@ def show_cursor_helper(show):
     else:
         ctrl.cursor_visible(show)
 
+def on_pop(active):
+    if mouse_enable_pop_stops_scroll.get() >= 1 and (gaze_job or scroll_job):
+        stop_scroll()
+
+    ctrl.mouse_click(button=0)
+noise.register("pop", on_pop)
 
 @ctx.action_class("user")
 class UserActions:
